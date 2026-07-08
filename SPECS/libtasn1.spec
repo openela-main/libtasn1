@@ -1,7 +1,7 @@
 Summary:	The ASN.1 library used in GNUTLS
 Name:		libtasn1
 Version:	4.13
-Release:	5%{?dist}
+Release:	6%{?dist}
 
 # The libtasn1 library is LGPLv2+, utilities are GPLv3+
 License:	GPLv3+ and LGPLv2+
@@ -13,6 +13,7 @@ Source2:	gpgkey-1F42418905D8206AA754CCDC29EE58B996865171.gpg
 Patch1:		libtasn1-3.4-rpath.patch
 Patch300:	libtasn1-4.19-CVE-2021-46848.patch
 Patch301:	libtasn1-4.20-CVE-2024-12133.patch
+Patch302:	libtasn1-4.13-cve-2025-13151-stack-buffer-overflow.patch
 
 BuildRequires:	bison, pkgconfig, help2man
 BuildRequires:	autoconf, automake, libtool
@@ -60,6 +61,7 @@ gpgv2 --keyring %{SOURCE2} %{SOURCE1} %{SOURCE0}
 %patch1 -p1 -b .rpath
 %patch300 -p1 -b .CVE-2021-46848
 %patch301 -p1 -b .CVE-2024-12133
+%patch302 -p1 -b .cve-2025-13151-stack-buffer-overflow
 
 %build
 autoreconf -v -f --install
@@ -112,6 +114,9 @@ test "$1" = 0 -a -f %_infodir/%name.info.gz && \
 
 
 %changelog
+* Mon Jun 01 2026 Daiki Ueno  <dueno@redhat.com> - 4.13-6
+- Backport the fix for CVE-2025-13151 (RHEL-139546)
+
 * Wed Feb 12 2025 Alexander Sosedkin <asosedki@redhat.com> - 4.13.0-5
 - Backport the fix for CVE-2024-12133
 
